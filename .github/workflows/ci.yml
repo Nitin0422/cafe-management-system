@@ -52,4 +52,4 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: bin/brakeman --no-pager
+      - run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
