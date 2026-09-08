@@ -83,5 +83,13 @@ RSpec.describe User, type: :model do
       user.destroy
       expect(PointsEntry.exists?(entry.id)).to be(false)
     end
+
+    it "prevents destroying a user who has created orders" do
+      user = create(:user)
+      create(:order, created_by: user)
+
+      expect(user.destroy).to be(false)
+      expect(user).to be_persisted
+    end
   end
 end
