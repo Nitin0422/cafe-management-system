@@ -5,7 +5,9 @@ class User < ApplicationRecord
 
   enum :role, { admin: 0, staff: 1, customer: 2 }
 
-  has_many :created_orders, class_name: "Order", foreign_key: :created_by_id, dependent: :nullify
+  # created_by_id is NOT NULL → must not nullify on destroy.
+  has_many :created_orders, class_name: "Order", foreign_key: :created_by_id, dependent: :restrict_with_error
+  # closed_by_id is nullable, so nullifying is safe.
   has_many :closed_orders, class_name: "Order", foreign_key: :closed_by_id, dependent: :nullify
   has_one :credit_account, dependent: :destroy
   has_many :points_entries, dependent: :destroy
