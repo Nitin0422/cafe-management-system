@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_000013) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_000015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,6 +69,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_000013) do
     t.index ["category_id", "available"], name: "index_menu_items_on_category_id_and_available"
     t.index ["category_id"], name: "index_menu_items_on_category_id"
     t.index ["created_by_id"], name: "index_menu_items_on_created_by_id"
+    t.index ["name"], name: "index_menu_items_on_name", unique: true
     t.index ["updated_by_id"], name: "index_menu_items_on_updated_by_id"
   end
 
@@ -86,7 +87,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_000013) do
     t.index ["created_by_id"], name: "index_order_items_on_created_by_id"
     t.index ["menu_item_id"], name: "index_order_items_on_menu_item_id"
     t.index ["order_id", "menu_item_id"], name: "index_order_items_on_order_id_and_menu_item_id"
-    t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["updated_by_id"], name: "index_order_items_on_updated_by_id"
   end
 
@@ -144,7 +144,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_000013) do
     t.index ["order_id"], name: "index_points_entries_on_order_id"
     t.index ["updated_by_id"], name: "index_points_entries_on_updated_by_id"
     t.index ["user_id", "created_at"], name: "index_points_entries_on_user_id_and_created_at"
-    t.index ["user_id"], name: "index_points_entries_on_user_id"
   end
 
   create_table "recipe_items", force: :cascade do |t|
@@ -185,7 +184,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_000013) do
     t.index ["created_by_id"], name: "index_stock_entries_on_created_by_id"
     t.index ["entry_type"], name: "index_stock_entries_on_entry_type"
     t.index ["ingredient_id", "created_at"], name: "index_stock_entries_on_ingredient_id_and_created_at"
-    t.index ["ingredient_id"], name: "index_stock_entries_on_ingredient_id"
     t.index ["updated_by_id"], name: "index_stock_entries_on_updated_by_id"
   end
 
