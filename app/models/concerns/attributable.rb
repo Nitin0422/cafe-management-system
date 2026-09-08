@@ -13,7 +13,11 @@ module Attributable
     belongs_to :created_by, class_name: "User", optional: true, inverse_of: false
     belongs_to :updated_by, class_name: "User", optional: true, inverse_of: false
 
-    before_create :set_created_by
+    # Stamped in before_validation so attribution is set before the model's
+    # own presence validation runs (before_create would run after validation,
+    # leaving created_by blank during validation for mandatory-attribution
+    # models such as Order).
+    before_validation :set_created_by, on: :create
     before_save :set_updated_by
   end
 
