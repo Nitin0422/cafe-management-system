@@ -17,6 +17,18 @@ class Order < ApplicationRecord
   validates :status, inclusion: { in: statuses.keys }
   validates :closure_type, inclusion: { in: closure_types.keys }, allow_nil: true
   validates :created_by, presence: true
+  # total_cents is a monetary amount; a negative order total is invalid.
+  validates :total_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  # A closed order must carry full per-staff closure attribution (FR-11):
+  # how it was closed, when, and by whom.  These columns are nullable in the
+  # schema (closure_type/closed_at/closed_by_id) so the requirement is enforced
+  # at the model level for the `closed` status.
+  with_options if: -> { status == "closed" } do
+    validates :closure_type, presence: true
+    validates :closed_at, presence: true
+    validates :closed_by, presence: true
+  end
 
   before_validation :generate_order_number, on: :create
 

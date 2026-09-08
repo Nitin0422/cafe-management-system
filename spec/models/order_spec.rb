@@ -32,6 +32,49 @@ RSpec.describe Order, type: :model do
       expect(order).not_to be_valid
       expect(order.errors[:created_by]).to be_present
     end
+
+    it "does not allow a negative total" do
+      order = build(:order, total_cents: -100)
+      expect(order).not_to be_valid
+      expect(order.errors[:total_cents]).to be_present
+    end
+
+    it "allows a zero total" do
+      expect(build(:order, total_cents: 0)).to be_valid
+    end
+  end
+
+  describe "closed-order integrity (FR-11)" do
+    let(:closed_by) { create(:user, :staff) }
+    let(:closed_order) do
+      build(:order, status: :closed, closure_type: :cash, closed_at: Time.current, closed_by: closed_by)
+    end
+
+    it "is valid with closure type, closed_at, and closed_by" do
+      expect(closed_order).to be_valid
+    end
+
+    it "is invalid without a closure type" do
+      order = build(:order, status: :closed, closed_at: Time.current, closed_by: closed_by)
+      expect(order).not_to be_valid
+      expect(order.errors[:closure_type]).to be_present
+    end
+
+    it "is invalid without a closed_at" do
+      order = build(:order, status: :closed, closure_type: :cash, closed_by: closed_by)
+      expect(order).not_to be_valid
+      expect(order.errors[:closed_at]).to be_present
+    end
+
+    it "is invalid without a closed_by" do
+      order = build(:order, status: :closed, closure_type: :cash, closed_at: Time.current)
+      expect(order).not_to be_valid
+      expect(order.errors[:closed_by]).to be_present
+    end
+
+    it "does not require closure attribution for non-closed orders" do
+      expect(build(:order, status: :open)).to be_valid
+    end
   end
 
   describe "order number generation" do

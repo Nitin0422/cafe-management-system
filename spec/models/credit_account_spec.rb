@@ -43,9 +43,11 @@ RSpec.describe CreditAccount, type: :model do
     it "returns closed tab charges minus tab payments" do
       customer = create(:user)
       account = create(:credit_account, user: customer)
+      closed_by = create(:user, :staff)
+      closed_at = Time.current
 
-      create(:order, customer: customer, status: :closed, closure_type: :tab, total_cents: 5_000)
-      create(:order, customer: customer, status: :closed, closure_type: :tab, total_cents: 1_500)
+      create(:order, customer: customer, status: :closed, closure_type: :tab, closed_by: closed_by, closed_at: closed_at, total_cents: 5_000)
+      create(:order, customer: customer, status: :closed, closure_type: :tab, closed_by: closed_by, closed_at: closed_at, total_cents: 1_500)
       create(:tab_payment, credit_account: account, amount_cents: 2_000)
 
       expect(account.outstanding_balance).to eq(4_500)
@@ -56,7 +58,7 @@ RSpec.describe CreditAccount, type: :model do
       account = create(:credit_account, user: customer)
 
       create(:order, customer: customer, status: :open, closure_type: :tab, total_cents: 9_000)
-      create(:order, customer: customer, status: :closed, closure_type: :cash, total_cents: 8_000)
+      create(:order, customer: customer, status: :closed, closure_type: :cash, closed_by: create(:user, :staff), closed_at: Time.current, total_cents: 8_000)
 
       expect(account.outstanding_balance).to eq(0)
     end
