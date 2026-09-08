@@ -14,6 +14,13 @@ RSpec.describe MenuItem, type: :model do
       expect(menu_item.errors[:name]).to be_present
     end
 
+    it "requires a unique name" do
+      create(:menu_item, name: "Espresso")
+      duplicate = build(:menu_item, name: "Espresso")
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:name]).to be_present
+    end
+
     it "requires a positive price" do
       expect(build(:menu_item, price_cents: 0)).not_to be_valid
       expect(build(:menu_item, price_cents: -100)).not_to be_valid
