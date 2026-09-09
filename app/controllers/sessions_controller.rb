@@ -9,6 +9,9 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email].to_s.downcase.strip)
 
     if user && user.active && user.authenticate(params[:password])
+      # Reset the session before signing in (OWASP session-fixation
+      # protection) so a pre-auth session id cannot be reused after login.
+      reset_session
       session[:user_id] = user.id
       redirect_to root_path, notice: "Welcome back, #{user.full_name}."
     else
