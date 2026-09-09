@@ -20,4 +20,14 @@ class User < ApplicationRecord
   validates :full_name, presence: true
   validates :role, inclusion: { in: roles.keys }
   validates :phone, uniqueness: true, allow_nil: true
+
+  before_validation :normalize_email
+
+  private
+
+  # Match the login form's normalization (sessions#create downcases and strips
+  # the looked-up email) so stored emails and uniqueness checks are consistent.
+  def normalize_email
+    self.email = email.to_s.downcase.strip
+  end
 end

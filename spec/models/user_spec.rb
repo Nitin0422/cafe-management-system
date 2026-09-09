@@ -49,6 +49,22 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "email normalization" do
+    it "downcases and strips the email before validation" do
+      user = create(:user, email: "  John@Example.COM ")
+
+      expect(user.email).to eq("john@example.com")
+    end
+
+    it "catches duplicates that differ only by case and whitespace" do
+      create(:user, email: "john@example.com")
+      user = build(:user, email: " John@Example.COM ")
+
+      expect(user).not_to be_valid
+      expect(user.errors[:email]).to be_present
+    end
+  end
+
   describe "enums" do
     it "maps roles to their integer values" do
       expect(described_class.roles).to eq("admin" => 0, "staff" => 1, "customer" => 2)
