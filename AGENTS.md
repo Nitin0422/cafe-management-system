@@ -17,3 +17,9 @@
 - Do not bundle unrelated changes into the same commit.
 - Commit after completing and verifying a small, coherent piece of work.
 - Use clear, descriptive commit messages.
+
+## Task Completion Checklist
+
+Before declaring a task complete:
+
+- [ ] Confirm the development server is not running — stop any `bin/rails server` (or similar) process started during verification, so no stray server is left running.
