@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   if Rails.env.test?
     get "guard/admin"    => "guard_echo#admin_only"
     get "guard/employee" => "guard_echo#employee_only"
+    get "test/login_as/:user_id" => "test_sessions#create", as: :test_login_as
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

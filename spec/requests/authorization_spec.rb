@@ -33,7 +33,7 @@ RSpec.describe "Role-based authorization", type: :request do
     end
 
     it "blocks customers with 403" do
-      log_in(create(:user, :customer))
+      log_in_directly(create(:user, :customer))
       get "/guard/admin"
       expect(response).to have_http_status(:forbidden)
     end
@@ -60,7 +60,7 @@ RSpec.describe "Role-based authorization", type: :request do
     end
 
     it "blocks customers with 403" do
-      log_in(create(:user, :customer))
+      log_in_directly(create(:user, :customer))
       get "/guard/employee"
       expect(response).to have_http_status(:forbidden)
     end

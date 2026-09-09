@@ -60,6 +60,14 @@ RSpec.describe "Sessions", type: :request do
       expect(session[:user_id]).to be_nil
       expect(response.body).to include("Invalid email or password.")
     end
+
+    it "rejects a customer even with valid credentials (customer login is T7)" do
+      customer = create(:user, :customer)
+      post login_path, params: { email: customer.email, password: "password123" }
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(session[:user_id]).to be_nil
+      expect(response.body).to include("Invalid email or password.")
+    end
   end
 
   describe "DELETE /logout" do
