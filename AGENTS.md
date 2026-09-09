@@ -17,3 +17,9 @@
 - Do not bundle unrelated changes into the same commit.
 - Commit after completing and verifying a small, coherent piece of work.
 - Use clear, descriptive commit messages.
+
+## Task Completion Checklist
+
+Before asking for a human review:
+
+- [ ] Boot the development server and smoke-test the app — start `bin/rails server` (or similar), confirm it boots cleanly, and load the key pages/flows affected by the task before requesting human review.
