@@ -16,15 +16,19 @@ admin = User.find_or_create_by!(email: "admin@aafnaicoffee.com") do |user|
   user.password = "password123"
 end
 
-[
-  { email: "sita@aafnaicoffee.com", full_name: "Sita Rai", phone: "+977-9810000001" },
-  { email: "ram@aafnaicoffee.com", full_name: "Ram Shrestha", phone: "+977-9810000002" }
-].each do |attrs|
-  User.find_or_create_by!(email: attrs[:email]) do |user|
-    user.full_name = attrs[:full_name]
-    user.phone = attrs[:phone]
-    user.role = :staff
-    user.password = "password123"
+# Staff users are created inside Current.set(user: admin) so the Attributable
+# concern stamps created_by/updated_by on them (who created the account, FR-2).
+Current.set(user: admin) do
+  [
+    { email: "sita@aafnaicoffee.com", full_name: "Sita Rai", phone: "+977-9810000001" },
+    { email: "ram@aafnaicoffee.com", full_name: "Ram Shrestha", phone: "+977-9810000002" }
+  ].each do |attrs|
+    User.find_or_create_by!(email: attrs[:email]) do |user|
+      user.full_name = attrs[:full_name]
+      user.phone = attrs[:phone]
+      user.role = :staff
+      user.password = "password123"
+    end
   end
 end
 
