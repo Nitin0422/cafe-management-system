@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include Attributable
+
   has_secure_password
 
   enum :role, { admin: 0, staff: 1, customer: 2 }
+
+  scope :employees, -> { where(role: %w[admin staff]) }
 
   # created_by_id is NOT NULL → must not nullify on destroy.
   has_many :created_orders, class_name: "Order", foreign_key: :created_by_id, dependent: :restrict_with_error
