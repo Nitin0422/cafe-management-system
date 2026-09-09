@@ -30,7 +30,7 @@
 
   <div>
     <%= form.label :role, "Role" %>
-    <%= form.select :role, options_for_select([["Admin", "admin"], ["Staff", "staff"]]) %>
+    <%= form.select :role, options_for_select([["Staff", "staff"], ["Admin", "admin"]]) %>
   </div>
 
   <%= form.submit "Create staff account" %>
