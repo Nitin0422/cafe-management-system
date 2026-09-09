@@ -3,7 +3,7 @@
 # Shared session authentication and role-based authorization.
 #
 # Provides:
-#   * current_user        - the signed-in user (memoized from session[:user_id])
+#   * current_user        - the signed-in user (memoized, must still be active)
 #   * Current.user        - request-scoped actor for the Attributable concern
 #   * require_login       - 302 to login path when unauthenticated
 #   * require_admin       - 403 for non-admins
@@ -30,7 +30,9 @@ module Authenticatable
   end
 
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id])
+    # Filter on active so a deactivated user's existing session stops
+    # authenticating immediately rather than remaining valid until expiry.
+    @current_user ||= User.find_by(id: session[:user_id], active: true)
   end
 
   def logged_in?

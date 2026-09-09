@@ -71,6 +71,18 @@ RSpec.describe "Role-based authorization", type: :request do
     end
   end
 
+  context "deactivated users" do
+    it "blocks a deactivated user with an existing session" do
+      user = create(:user, :staff)
+      log_in(user)
+      user.update!(active: false)
+
+      get "/guard/employee"
+
+      expect(response).to redirect_to(login_path)
+    end
+  end
+
   context "session expiry configuration" do
     it "sets an 8-hour cookie expiration" do
       # The session cookie is configured with expire_after 8.hours in
