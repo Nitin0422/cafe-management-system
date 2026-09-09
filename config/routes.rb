@@ -15,6 +15,13 @@ Rails.application.routes.draw do
     resources :menu_items, only: %i[index new create edit update] do
       member { post :deactivate }
     end
+
+    # Inventory management (T6). Ingredients and recipes are admin-only; stock
+    # entries (an immutable ledger) may be recorded by any employee so staff
+    # can restock or correct stock at the counter.
+    resources :ingredients, only: %i[index new create edit update]
+    resources :recipe_items, only: %i[index new create edit update destroy]
+    resources :stock_entries, only: %i[index new create]
   end
 
   # Test-only guard endpoints for authorization specs. These are only mounted

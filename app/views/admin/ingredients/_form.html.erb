@@ -1,0 +1,30 @@
+<%= form_with model: [:admin, ingredient] do |form| %>
+  <% if ingredient.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% ingredient.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, "Name" %>
+    <%= form.text_field :name, autofocus: true %>
+  </div>
+
+  <div>
+    <%= form.label :unit, "Unit" %>
+    <%= form.text_field :unit %>
+    <p>Single stock unit for this ingredient, e.g. g, kg, ml, l, pcs.</p>
+  </div>
+
+  <div>
+    <%= form.label :low_stock_threshold, "Low-stock threshold" %>
+    <%= form.number_field :low_stock_threshold, step: "0.001", min: "0" %>
+    <p>Alert when current stock is at or below this amount.</p>
+  </div>
+
+  <%= form.submit submit_label %>
+<% end %>
