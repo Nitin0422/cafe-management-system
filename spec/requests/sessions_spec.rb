@@ -38,6 +38,21 @@ RSpec.describe "Sessions", type: :request do
       expect(session[:user_id]).to eq(staff.id)
     end
 
+    it "rotates the session id after successful login (session fixation protection)" do
+      user = create(:user, :admin)
+
+      # Establish a pre-login session
+      get login_path
+      pre_login_session_id = request.session.id
+
+      # Log in — should rotate the session via reset_session
+      post login_path, params: { email: user.email, password: "password123" }
+
+      expect(response).to redirect_to(root_path)
+      expect(request.session.id).to be_present
+      expect(request.session.id).not_to eq(pre_login_session_id)
+    end
+
     it "rejects a wrong password with a generic error" do
       staff = create(:user, :staff)
       post login_path, params: { email: staff.email, password: "wrong-password" }
