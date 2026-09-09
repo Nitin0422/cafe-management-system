@@ -8,6 +8,7 @@ class StockEntry < ApplicationRecord
   belongs_to :ingredient
 
   validates :quantity, numericality: { other_than: 0 }
+  validates :quantity, numericality: { greater_than: 0 }, if: :restock?
   validates :entry_type, inclusion: { in: entry_types.keys }
   validates :created_by, presence: true
 

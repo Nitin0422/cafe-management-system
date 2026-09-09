@@ -1,0 +1,32 @@
+<% content_for :title, "Stock entries" %>
+
+<h1>Stock entries</h1>
+
+<p><%= link_to "Record stock entry", new_admin_stock_entry_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>When</th>
+      <th>Ingredient</th>
+      <th>Type</th>
+      <th>Quantity</th>
+      <th>Reference</th>
+      <th>Note</th>
+      <th>Recorded by</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stock_entries.each do |entry| %>
+      <tr>
+        <td><%= l(entry.created_at, format: :long) %></td>
+        <td><%= entry.ingredient.name %></td>
+        <td><%= entry.entry_type.titleize %></td>
+        <td><%= entry.quantity %></td>
+        <td><%= entry.reference %></td>
+        <td><%= entry.note %></td>
+        <td><%= entry.created_by&.full_name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

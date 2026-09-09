@@ -14,9 +14,29 @@ RSpec.describe StockEntry, type: :model do
       expect(stock_entry.errors[:quantity]).to be_present
     end
 
-    it "accepts positive (add) and negative (remove) quantities" do
-      expect(build(:stock_entry, quantity: 10)).to be_valid
-      expect(build(:stock_entry, quantity: -10)).to be_valid
+    it "accepts a positive restock quantity" do
+      expect(build(:stock_entry, quantity: 10, entry_type: :restock)).to be_valid
+    end
+
+    it "accepts positive and negative correction quantities" do
+      expect(build(:stock_entry, quantity: 10, entry_type: :correction)).to be_valid
+      expect(build(:stock_entry, quantity: -10, entry_type: :correction)).to be_valid
+    end
+
+    it "rejects a negative quantity for a restock" do
+      stock_entry = build(:stock_entry, quantity: -10, entry_type: :restock)
+      expect(stock_entry).not_to be_valid
+      expect(stock_entry.errors[:quantity]).to be_present
+    end
+
+    it "rejects a zero quantity for a restock" do
+      stock_entry = build(:stock_entry, quantity: 0, entry_type: :restock)
+      expect(stock_entry).not_to be_valid
+      expect(stock_entry.errors[:quantity]).to be_present
+    end
+
+    it "allows a negative quantity for a correction" do
+      expect(build(:stock_entry, quantity: -10, entry_type: :correction)).to be_valid
     end
 
     it "rejects an unknown entry type" do
