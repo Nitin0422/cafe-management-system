@@ -45,8 +45,19 @@ module Admin
         return
       end
 
-      @user.update(active: false)
-      redirect_to admin_users_path, notice: "#{@user.full_name}'s account has been deactivated."
+      was_active = @user.active?
+
+      if @user.update(active: false)
+        if was_active
+          redirect_to admin_users_path, notice: "#{@user.full_name}'s account has been deactivated."
+        else
+          redirect_to admin_users_path, notice: "#{@user.full_name}'s account is already deactivated."
+        end
+      else
+        alert = "Could not deactivate #{@user.full_name}'s account."
+        alert += " #{@user.errors.full_messages.to_sentence}" if @user.errors.any?
+        redirect_to admin_users_path, alert: alert
+      end
     end
 
     private

@@ -182,6 +182,7 @@ RSpec.describe "Admin staff account management", type: :request do
 
       expect(target.reload.active).to be(false)
       expect(response).to redirect_to(admin_users_path)
+      expect(flash[:notice]).to include("has been deactivated")
     end
 
     it "records updated_by as the acting admin" do
@@ -242,6 +243,7 @@ RSpec.describe "Admin staff account management", type: :request do
 
       expect(target.reload.active).to be(false)
       expect(response).to redirect_to(admin_users_path)
+      expect(flash[:notice]).to include("already deactivated")
     end
 
     it "returns 404 when deactivating a customer id" do
