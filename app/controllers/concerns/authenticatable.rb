@@ -32,7 +32,13 @@ module Authenticatable
   def current_user
     # Filter on active so a deactivated user's existing session stops
     # authenticating immediately rather than remaining valid until expiry.
-    @current_user ||= User.find_by(id: session[:user_id], active: true)
+    # When the session holds a stale user_id, invalidate it so re-activation
+    # cannot silently restore the old session without a fresh login.
+    @current_user ||= begin
+      user = User.find_by(id: session[:user_id], active: true)
+      session.delete(:user_id) if session[:user_id].present? && user.nil?
+      user
+    end
   end
 
   def logged_in?
