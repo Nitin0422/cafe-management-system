@@ -4,6 +4,13 @@ Rails.application.routes.draw do
   post "login",  to: "sessions#create"
   delete "logout", to: "sessions#destroy", as: :logout
 
+  # Admin staff-account management (T4). Only admins may manage staff accounts.
+  namespace :admin do
+    resources :users, only: %i[index new create] do
+      member { post :deactivate }
+    end
+  end
+
   # Test-only guard endpoints for authorization specs. These are only mounted
   # in the test environment so request specs can exercise require_admin and
   # require_any_employee before real feature controllers exist (T4+).

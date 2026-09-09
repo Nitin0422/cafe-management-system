@@ -49,6 +49,22 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "email normalization" do
+    it "downcases and strips the email before validation" do
+      user = create(:user, email: "  John@Example.COM ")
+
+      expect(user.email).to eq("john@example.com")
+    end
+
+    it "catches duplicates that differ only by case and whitespace" do
+      create(:user, email: "john@example.com")
+      user = build(:user, email: " John@Example.COM ")
+
+      expect(user).not_to be_valid
+      expect(user.errors[:email]).to be_present
+    end
+  end
+
   describe "enums" do
     it "maps roles to their integer values" do
       expect(described_class.roles).to eq("admin" => 0, "staff" => 1, "customer" => 2)
@@ -58,6 +74,34 @@ RSpec.describe User, type: :model do
       expect(build(:user, :admin).admin?).to be(true)
       expect(build(:user, role: :staff).staff?).to be(true)
       expect(build(:user).customer?).to be(true)
+    end
+  end
+
+  describe "attribution" do
+    it "stamps created_by and updated_by from Current.user on create" do
+      actor = create(:user, :admin)
+      Current.user = actor
+
+      user = create(:user, :staff, created_by: nil)
+      expect(user.created_by).to eq(actor)
+      expect(user.updated_by).to eq(actor)
+    end
+  end
+
+  describe "employees scope" do
+    it "returns admins and staff but excludes customers" do
+      admin = create(:user, :admin)
+      staff = create(:user, :staff)
+      customer = create(:user, :customer)
+
+      expect(User.employees).to contain_exactly(admin, staff)
+      expect(User.employees).not_to include(customer)
+    end
+  end
+
+  describe "active flag" do
+    it "defaults to true" do
+      expect(build(:user).active).to be(true)
     end
   end
 

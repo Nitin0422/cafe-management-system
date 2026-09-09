@@ -1,0 +1,35 @@
+<% content_for :title, "Staff accounts" %>
+
+<h1>Staff accounts</h1>
+
+<p><%= link_to "New staff account", new_admin_user_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Status</th>
+      <th>Created by</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.full_name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role.titleize %></td>
+        <td><%= user.active? ? "Active" : "Deactivated" %></td>
+        <td><%= user.created_by&.full_name %></td>
+        <td>
+          <% if user.active? %>
+            <%= button_to "Deactivate", deactivate_admin_user_path(user), method: :post,
+                          data: { turbo_confirm: "Deactivate this account? The user will no longer be able to log in." } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

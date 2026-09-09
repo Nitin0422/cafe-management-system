@@ -3,6 +3,9 @@
 <% if logged_in? %>
   <p>Welcome, <%= current_user.full_name %>.</p>
   <%= button_to "Log out", logout_path, method: :delete %>
+  <% if current_user.admin? %>
+    <p><%= link_to "Manage staff accounts", admin_users_path %></p>
+  <% end %>
 <% else %>
   <%= link_to "Log in", login_path %>
 <% end %>
