@@ -1,0 +1,29 @@
+<%= form_with model: [:admin, recipe_item] do |form| %>
+  <% if recipe_item.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% recipe_item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :menu_item_id, "Menu item" %>
+    <%= form.collection_select :menu_item_id, menu_items, :id, :name, prompt: "Select a menu item" %>
+  </div>
+
+  <div>
+    <%= form.label :ingredient_id, "Ingredient" %>
+    <%= form.collection_select :ingredient_id, ingredients, :id, :name, prompt: "Select an ingredient" %>
+  </div>
+
+  <div>
+    <%= form.label :quantity, "Quantity" %>
+    <%= form.number_field :quantity, step: "0.001", min: "0.001" %>
+    <p>The amount of this ingredient needed to make one serving.</p>
+  </div>
+
+  <%= form.submit submit_label %>
+<% end %>

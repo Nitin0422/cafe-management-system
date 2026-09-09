@@ -1,0 +1,5 @@
+<% content_for :title, "New recipe line" %>
+
+<h1>New recipe line</h1>
+
+<%= render "form", recipe_item: @recipe_item, menu_items: @menu_items, ingredients: @ingredients, submit_label: "Add recipe line" %>
