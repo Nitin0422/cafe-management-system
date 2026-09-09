@@ -145,6 +145,22 @@ RSpec.describe "Admin staff account management", type: :request do
       expect(response).to have_http_status(:unprocessable_content)
     end
 
+    it "rejects a blank role with 422 and no record" do
+      expect do
+        post admin_users_path, params: { user: { full_name: "No Role", email: "norole@example.com", password: "password123", role: "" } }
+      end.not_to change(User, :count)
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
+    it "rejects an omitted role with 422 and no record" do
+      expect do
+        post admin_users_path, params: { user: { full_name: "No Role", email: "norole@example.com", password: "password123" } }
+      end.not_to change(User, :count)
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
     it "rejects missing email with 422 and no record" do
       expect do
         post admin_users_path, params: { user: { full_name: "No Email", email: "", password: "password123", role: "staff" } }
