@@ -20,6 +20,6 @@
 
 ## Task Completion Checklist
 
-Before declaring a task complete:
+Before asking for a human review:
 
-- [ ] Confirm the development server is not running — stop any `bin/rails server` (or similar) process started during verification, so no stray server is left running.
+- [ ] Boot the development server and smoke-test the app — start `bin/rails server` (or similar), confirm it boots cleanly, and load the key pages/flows affected by the task before requesting human review.
