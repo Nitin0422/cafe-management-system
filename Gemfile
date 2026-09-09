@@ -49,6 +49,8 @@ group :development, :test do
 
   # Test fixtures with a clean, readable syntax [https://github.com/thoughtbot/factory_bot_rails]
   gem "factory_bot_rails"
+
+  gem "ruby-vips", "~> 2.0"
 end
 
 group :development do
