@@ -8,7 +8,7 @@ module Admin
     before_action :require_admin
 
     def index
-      @users = User.employees.order(:full_name)
+      @users = User.employees.includes(:created_by).order(:full_name, :id)
     end
 
     def new
