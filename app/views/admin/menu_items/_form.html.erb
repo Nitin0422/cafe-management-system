@@ -1,0 +1,52 @@
+<%= form_with model: menu_item do |form| %>
+  <% if menu_item.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% menu_item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, "Name" %>
+    <%= form.text_field :name, autofocus: true %>
+  </div>
+
+  <div>
+    <%= form.label :description, "Description" %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :price_rupees, "Price (NPR)" %>
+    <%= form.number_field :price_rupees, step: "0.01", min: "0.01" %>
+  </div>
+
+  <div>
+    <%= form.label :category_id, "Category" %>
+    <%= form.collection_select :category_id, categories, :id, :name, prompt: "Select a category" %>
+  </div>
+
+  <div>
+    <%= form.label :available, "Available" %>
+    <%= form.check_box :available %>
+    <p>Only available menu items can be ordered.</p>
+  </div>
+
+  <div>
+    <%= form.label :redeemable, "Redeemable with points" %>
+    <%= form.check_box :redeemable %>
+  </div>
+
+  <div>
+    <p>
+      Recipe:
+      <%= menu_item.recipe_items.any? ? "Recipe defined" : "No recipe" %>
+      <%# Recipe editing belongs to T6; this is a read-only indicator. %>
+    </p>
+  </div>
+
+  <%= form.submit submit_label %>
+<% end %>

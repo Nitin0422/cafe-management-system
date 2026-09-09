@@ -5,8 +5,14 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy", as: :logout
 
   # Admin staff-account management (T4). Only admins may manage staff accounts.
+  # Admin menu management (T5). Only admins may manage menu items; deactivate
+  # soft-hides an item by flipping `available` to false rather than deleting it.
   namespace :admin do
     resources :users, only: %i[index new create] do
+      member { post :deactivate }
+    end
+
+    resources :menu_items, only: %i[index new create edit update] do
       member { post :deactivate }
     end
   end
