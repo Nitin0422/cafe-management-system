@@ -1,0 +1,36 @@
+<% content_for :title, "Menu items" %>
+
+<h1>Menu items</h1>
+
+<p><%= link_to "New menu item", new_admin_menu_item_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price (NPR)</th>
+      <th>Availability</th>
+      <th>Redeemable with points</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @menu_items.each do |menu_item| %>
+      <tr>
+        <td><%= menu_item.name %></td>
+        <td><%= menu_item.category.name %></td>
+        <td><%= number_to_currency(menu_item.price_rupees, unit: "Rs. ", precision: 2) %></td>
+        <td><%= menu_item.available? ? "Available" : "Unavailable" %></td>
+        <td><%= menu_item.redeemable? ? "Yes" : "No" %></td>
+        <td>
+          <%= link_to "Edit", edit_admin_menu_item_path(menu_item) %>
+          <% if menu_item.available? %>
+            <%= button_to "Deactivate", deactivate_admin_menu_item_path(menu_item), method: :post,
+                          data: { turbo_confirm: "Deactivate this menu item? It will no longer be orderable." } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

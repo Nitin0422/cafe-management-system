@@ -61,4 +61,20 @@ RSpec.describe MenuItem, type: :model do
       expect(MenuItem.exists?(menu_item.id)).to be(true)
     end
   end
+
+  describe "price_rupees" do
+    it "derives the price in rupees from the stored paisa" do
+      expect(build(:menu_item, price_cents: 15_000).price_rupees).to eq(150.0)
+    end
+
+    it "is nil when no price is stored" do
+      expect(build(:menu_item, price_cents: nil).price_rupees).to be_nil
+    end
+
+    it "prefers the submitted form value over the stored price" do
+      menu_item = build(:menu_item, price_cents: 15_000)
+      menu_item.price_rupees = "250"
+      expect(menu_item.price_rupees).to eq("250")
+    end
+  end
 end

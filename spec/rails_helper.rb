@@ -74,6 +74,13 @@ RSpec.configure do |config|
 
   # Drive system specs with Selenium against headless Chrome.
   config.before(:each, type: :system) do
-    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
+    # --disable-smooth-scrolling: workaround for chromedriver clicking at
+    # stale coordinates after a smooth-scroll animation, which silently
+    # drops clicks (SeleniumHQ/selenium#16345).
+    driven_by :selenium,
+              using: :headless_chrome,
+              screen_size: [ 1400, 1400 ] do |options|
+      options.add_argument("--disable-smooth-scrolling")
+    end
   end
 end
