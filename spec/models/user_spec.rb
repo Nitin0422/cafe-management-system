@@ -40,8 +40,33 @@ RSpec.describe User, type: :model do
       expect(user.errors[:phone]).to be_present
     end
 
-    it "allows a nil phone" do
-      expect(build(:user, phone: nil)).to be_valid
+    it "requires a phone for customers" do
+      user = build(:user, :customer, phone: nil)
+      expect(user).not_to be_valid
+      expect(user.errors[:phone]).to be_present
+    end
+
+    it "allows a nil phone for employees" do
+      expect(build(:user, :staff, phone: nil)).to be_valid
+      expect(build(:user, :admin, phone: nil)).to be_valid
+    end
+
+    it "rejects a phone with an invalid format" do
+      user = build(:user, phone: "not-a-phone")
+      expect(user).not_to be_valid
+      expect(user.errors[:phone]).to be_present
+    end
+
+    it "rejects a phone that is too short" do
+      user = build(:user, phone: "123456")
+      expect(user).not_to be_valid
+      expect(user.errors[:phone]).to be_present
+    end
+
+    it "rejects a phone that is too long" do
+      user = build(:user, phone: "+977-9" + "0" * 20)
+      expect(user).not_to be_valid
+      expect(user.errors[:phone]).to be_present
     end
 
     it "rejects an unknown role" do
@@ -62,6 +87,56 @@ RSpec.describe User, type: :model do
 
       expect(user).not_to be_valid
       expect(user.errors[:email]).to be_present
+    end
+  end
+
+  describe "phone normalization" do
+    it "strips surrounding whitespace before validation" do
+      user = create(:user, phone: "  +977-9800000001  ")
+
+      expect(user.phone).to eq("+977-9800000001")
+    end
+  end
+
+  describe ".find_by_identifier" do
+    it "finds a user by email, case-insensitively and ignoring whitespace" do
+      user = create(:user, email: "john@example.com")
+
+      expect(described_class.find_by_identifier("  JOHN@Example.COM ")).to eq(user)
+    end
+
+    it "finds a user by phone, ignoring surrounding whitespace" do
+      user = create(:user, phone: "+977-9800000001")
+
+      expect(described_class.find_by_identifier("  +977-9800000001  ")).to eq(user)
+    end
+
+    it "returns nil when no user matches" do
+      expect(described_class.find_by_identifier("nobody@example.com")).to be_nil
+    end
+
+    it "returns nil for a blank identifier" do
+      expect(described_class.find_by_identifier("  ")).to be_nil
+    end
+  end
+
+  describe ".authenticate_identifier" do
+    let(:user) { create(:user, :customer, email: "cust@example.com", phone: "+977-9800000001") }
+
+    it "returns the user with a matching email and password" do
+      expect(described_class.authenticate_identifier(user.email, "password123")).to eq(user)
+    end
+
+    it "returns the user with a matching phone and password" do
+      expect(described_class.authenticate_identifier(user.phone, "password123")).to eq(user)
+    end
+
+    it "returns nil with a wrong password" do
+      expect(described_class.authenticate_identifier(user.email, "wrong-password")).to be_nil
+    end
+
+    it "returns nil with an unknown identifier" do
+      expect(described_class.authenticate_identifier("nobody@example.com", "password123")).to be_nil
     end
   end
 
