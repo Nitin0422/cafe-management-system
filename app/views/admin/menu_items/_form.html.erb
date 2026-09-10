@@ -44,7 +44,7 @@
     <p>
       Recipe:
       <%= menu_item.recipe_items.any? ? "Recipe defined" : "No recipe" %>
-      <%# Recipe editing belongs to T6; this is a read-only indicator. %>
+      <%= link_to "Manage recipes", admin_recipe_items_path %>
     </p>
   </div>
 

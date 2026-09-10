@@ -6,6 +6,11 @@
   <% if current_user.admin? %>
     <p><%= link_to "Manage staff accounts", admin_users_path %></p>
     <p><%= link_to "Manage menu", admin_menu_items_path %></p>
+    <p><%= link_to "Manage ingredients", admin_ingredients_path %></p>
+    <p><%= link_to "Manage recipes", admin_recipe_items_path %></p>
+    <p><%= link_to "Stock entries", admin_stock_entries_path %></p>
+  <% elsif current_user.staff? %>
+    <p><%= link_to "Stock entries", admin_stock_entries_path %></p>
   <% end %>
 <% else %>
   <%= link_to "Log in", login_path %>

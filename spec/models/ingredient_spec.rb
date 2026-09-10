@@ -43,7 +43,7 @@ RSpec.describe Ingredient, type: :model do
       ingredient = create(:ingredient)
       create(:stock_entry, ingredient: ingredient, quantity: 100)
       create(:stock_entry, ingredient: ingredient, quantity: 50)
-      create(:stock_entry, ingredient: ingredient, quantity: -25)
+      create(:stock_entry, ingredient: ingredient, quantity: -25, entry_type: :correction)
 
       expect(ingredient.current_stock).to eq(125)
     end

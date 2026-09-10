@@ -1,0 +1,30 @@
+<% content_for :title, "Ingredients" %>
+
+<h1>Ingredients</h1>
+
+<p><%= link_to "New ingredient", new_admin_ingredient_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Unit</th>
+      <th>Current stock</th>
+      <th>Low-stock threshold</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ingredients.each do |ingredient| %>
+      <tr>
+        <td><%= ingredient.name %></td>
+        <td><%= ingredient.unit %></td>
+        <td><%= ingredient.current_stock %></td>
+        <td><%= ingredient.low_stock_threshold %></td>
+        <td><%= ingredient.low_stock? ? "Low stock" : "OK" %></td>
+        <td><%= link_to "Edit", edit_admin_ingredient_path(ingredient) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

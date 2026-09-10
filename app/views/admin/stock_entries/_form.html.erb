@@ -1,0 +1,41 @@
+<%= form_with model: [:admin, stock_entry] do |form| %>
+  <% if stock_entry.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% stock_entry.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :ingredient_id, "Ingredient" %>
+    <%= form.collection_select :ingredient_id, ingredients, :id, :name, prompt: "Select an ingredient" %>
+  </div>
+
+  <div>
+    <%= form.label :entry_type, "Type" %>
+    <%= form.select :entry_type, options_for_select([["Restock / purchase", "restock"], ["Stock correction", "correction"]]) %>
+    <p>Restock adds stock. A correction adjusts the current level (positive adds, negative removes).</p>
+  </div>
+
+  <div>
+    <%= form.label :quantity, "Quantity" %>
+    <%= form.number_field :quantity, step: "0.001", value: nil, placeholder: "e.g. 150" %>
+    <p>Restock must be a positive value. Corrections may be positive or negative.</p>
+  </div>
+
+  <div>
+    <%= form.label :reference, "Reference" %>
+    <%= form.text_field :reference %>
+    <p>Optional, e.g. an invoice or purchase order number.</p>
+  </div>
+
+  <div>
+    <%= form.label :note, "Note" %>
+    <%= form.text_area :note %>
+  </div>
+
+  <%= form.submit "Record stock entry" %>
+<% end %>
