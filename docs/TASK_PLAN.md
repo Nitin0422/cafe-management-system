@@ -31,7 +31,7 @@
 
 ---
 
-## 1. Task List (14 tasks)
+## 1. Task List (19 tasks)
 
 Tasks are sequenced in dependency-honoring order. Task IDs are assigned in a
 recommended build order; no ticket numbers are implied yet.
@@ -297,6 +297,111 @@ recommended build order; no ticket numbers are implied yet.
 - **Testing requirements:** Report query specs (date filtering, grouping,
   per-staff attribution) using fixture data; authorization spec.
 
+### T15 — Canonicalize customer phone numbers
+
+- **Description:** Phone numbers can be entered with varying formatting
+  (+9779800000001 vs +977-980-000-001 vs +977 980 000 001). `normalize_phone`
+  currently only strips whitespace, so formatting variants bypass the phone
+  uniqueness constraint and break `find_by_identifier` phone login when the
+  stored format differs from the login input. Canonicalize phone numbers before
+  validation, uniqueness check, and lookup; consider a data migration for
+  existing rows.
+- **Acceptance criteria:**
+  - [ ] Phone numbers are canonicalized (digits-only or E.164) before validation
+        and uniqueness enforcement.
+  - [ ] Duplicate phone numbers with different formatting are rejected.
+  - [ ] Phone-based login (`find_by_identifier`) works regardless of how the
+        phone was originally stored.
+  - [ ] A data migration normalizes existing rows (if any exist).
+  - [ ] Specs cover uniqueness across formats and login across formats.
+- **Dependencies:** T7.
+- **Technical considerations:** Choose a canonical format (E.164 without
+  spaces/dashes) and apply it consistently via a `before_validation` callback
+  or similar. Ensure the migration uses the same normalization logic.
+- **Testing requirements:** Uniqueness specs across formatting variants; login
+  specs across formatting variants; data migration spec if applicable.
+
+### T16 — Enforce minimum password length
+
+- **Description:** No minimum password length is enforced — `has_secure_password`
+  only validates presence, so a 1-character password is accepted at registration
+  and counter-side customer creation. Add a minimum length validation to the
+  User model.
+- **Acceptance criteria:**
+  - [ ] `validates :password, length: { minimum: 8 }` (or similar) is enforced.
+  - [ ] Registration and counter-side customer creation reject short passwords.
+  - [ ] Model and request specs cover the minimum length constraint.
+- **Dependencies:** T7.
+- **Technical considerations:** The validation belongs on the User model so it
+  applies to all registration paths (self-service, admin staff creation, and
+  counter-side customer creation).
+- **Testing requirements:** Model spec for password length validation; request
+  specs for registration paths rejecting short passwords.
+
+### T17 — Establish design system foundation
+
+- **Description:** The app has no styling at all —
+  `app/assets/stylesheets/application.css` is an empty manifest and all views
+  are unstyled plain HTML. Build the design-system foundation per DESIGN.md (the
+  project's UI source of truth): CSS custom properties for color roles
+  (background, surface, primary/secondary/muted text, borders, primary action,
+  success, warning, error), radius/shadow tokens, restrained type scale, base
+  components (buttons with primary/secondary/tertiary/destructive hierarchy,
+  forms with visible labels + validation states, tables, flash messages), and an
+  application layout shell with role-based navigation replacing the inline links
+  in `pages/home`. No generic-SaaS patterns per DESIGN.md §1.
+- **Acceptance criteria:**
+  - [ ] CSS custom properties for color roles, radius, and shadow tokens defined
+        in the stylesheet.
+  - [ ] Restrained type scale established.
+  - [ ] Base component styles: buttons (primary/secondary/tertiary/destructive),
+        forms (visible labels, validation states), tables, flash messages.
+  - [ ] Application layout shell with role-based navigation.
+  - [ ] Existing views remain functional after layout change.
+  - [ ] Specs (visual/system tests if available) pass.
+- **Dependencies:** None — baseline on `main`.
+- **Technical considerations:** Follow DESIGN.md strictly. Do not introduce
+  generic-SaaS styling patterns. Keep the foundation minimal — T18 and T19
+  apply it to specific views.
+- **Testing requirements:** System tests verifying layout renders and navigation
+  links appear for each role; no visual regressions on existing pages.
+
+### T18 — Apply design system to auth & home screens
+
+- **Description:** Apply the T17 design system to the authentication and home
+  screens: `sessions/new`, `customer_sessions/new`, `registrations/new`,
+  `staff/customers/new`, and `pages/home`.
+- **Acceptance criteria:**
+  - [ ] All five views use design-system component styles.
+  - [ ] Forms follow the design-system form pattern (visible labels, validation
+        states).
+  - [ ] No unstyled elements remain on these pages.
+  - [ ] Existing functionality is preserved (specs pass).
+- **Dependencies:** T17.
+- **Technical considerations:** Apply the component classes defined in T17. Do
+  not restructure view logic — only apply styling.
+- **Testing requirements:** System tests for each view confirming styled elements
+  render and functionality is preserved.
+
+### T19 — Apply design system to admin screens
+
+- **Description:** Apply the T17 design system to the admin screens:
+  `admin/users`, `admin/menu_items`, `admin/ingredients`,
+  `admin/recipe_items`, `admin/stock_entries` (index tables, new/edit forms,
+  form partials). Keep tables as tables (DESIGN.md §12) — do not convert to
+  cards.
+- **Acceptance criteria:**
+  - [ ] All five admin index views use design-system table styling.
+  - [ ] New/edit forms and form partials use design-system form styling.
+  - [ ] Tables remain as tables (no card conversion per DESIGN.md §12).
+  - [ ] No unstyled elements remain on these pages.
+  - [ ] Existing functionality is preserved (specs pass).
+- **Dependencies:** T17.
+- **Technical considerations:** Apply the component classes defined in T17. Do
+  not restructure view logic — only apply styling. Preserve table structure.
+- **Testing requirements:** System tests for each admin view confirming styled
+  elements render and functionality is preserved.
+
 ---
 
 ## 2. Dependency spine (build order)
@@ -308,6 +413,8 @@ T1 Set up scaffolding
      │   ├─ T4 Staff account management
      │   ├─ T5 Menu management
      │   └─ T7 Customer registration & login
+     │       ├─ T15 Phone number canonicalization (follow-up)
+     │       └─ T16 Minimum password length (follow-up)
      ├─ T5 Menu management ─┐
      ├─ T3/T5 → T6 Inventory (ingredients, recipes, stock)
      ├─ T3/T5 → T8 Rewards configuration ─→ T9 Rewards engine & ledger
@@ -316,15 +423,27 @@ T1 Set up scaffolding
      └─ T7 → T10 Credit/tab system
 T7 + T9 + T10 → T13 Customer dashboard
 T12 + T10 → T14 Admin reports
+T17 Design system foundation (baseline main)
+ ├─ T18 Apply design system to auth & home screens
+ └─ T19 Apply design system to admin screens
 ```
 
 **Recommended implementation order (sequential):**
 1. T1 → 2. T2 → 3. T3 → 4. T4 → 5. T5 → 6. T6 → 7. T7 → 8. T8 → 9. T9 →
 10. T10 → 11. T11 → 12. T12 → 13. T13 → 14. T14
 
+**Follow-up additions (approved 2026-09-11):**
+
+- T15 and T16 are independent follow-up fixes to T7; each can be worked at any
+  time after T7, in any order.
+- T17 → T18 → T19 is the UI/design-system order: T17 must precede T18 and T19;
+  T18 and T19 are independent of each other once T17 is done.
+
 ## 3. First unblocked tasks
 
 - **T1 — Set up project scaffolding** (no dependencies; unblocks the whole plan).
+- **T17 — Establish design system foundation** (no dependencies; baseline on
+  `main`; unblocks T18 and T19).
 
 ## 4. Completeness pass
 
@@ -359,4 +478,5 @@ those already marked "Should Have / Nice to Have" in the PRD (v1.1+).
    convention). If different, T1/T2 adjust.
 2. Confirm the database/status conventions are acceptable (single global points
    rate; redundant menu `redeemable` flag drives rewards config).
-3. Confirm task granularity — 14 tasks, each one branch + one PR.
+3. Confirm task granularity — 14 tasks (plus 5 follow-up additions approved on
+   2026-09-11: T15–T19), each one branch + one PR.

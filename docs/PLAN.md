@@ -19,7 +19,7 @@ physical terminal.
   confirmed by manager).
 - **Scope:** v1 MVP only; all "Should Have / Nice to Have" PRD items are
   deferred to v1.1+.
-- **Workflow:** 14 tasks; each task = 1 branch = 1 PR into `main`.
+- **Workflow:** 19 tasks; each task = 1 branch = 1 PR into `main`.
 - **Credit model:** Unlimited, request-based credit; only per-customer
   suspension is admin-controlled.
 - **Redemption:** Counter-only; points accrue at payment (cash/card) or
@@ -47,6 +47,11 @@ physical terminal.
 | T12 | Implement order completion (payment, tab close, stock, points) | T11, T6, T9, T10 | Not started |
 | T13 | Implement customer self-service dashboard | T7, T9, T10 | Not started |
 | T14 | Implement admin reports | T12, T10 | Not started |
+| T15 | Canonicalize customer phone numbers | T7 | Not started |
+| T16 | Enforce minimum password length | T7 | Not started |
+| T17 | Establish design system foundation | None (baseline main) | Not started |
+| T18 | Apply design system to auth & home screens | T17 | Not started |
+| T19 | Apply design system to admin screens | T17 | Not started |
 
 ## 4. Dependency-Honoring Implementation Order
 
@@ -58,6 +63,16 @@ physical terminal.
 - **First unblocked task:** T1 — Set up project scaffolding.
 - **Critical convergence point:** T12 — Order completion (atomic close of order
   + payment/tab + stock decrement + points).
+
+### Approved additions (2026-09-11)
+
+Five follow-up tasks were approved by the human manager on 2026-09-11:
+
+- **T15 / T16** are independent bug-fix follow-ups to T7 (customer registration
+  & login). They can be worked in any order and are not on the critical path.
+- **T17 → T18 → T19** is the UI/design-system work order. T17 (design-system
+  foundation) must be completed before T18 or T19 can begin. T18 and T19 are
+  independent of each other once T17 is done.
 
 ## 5. Per-Task Requirements & Acceptance Criteria
 
