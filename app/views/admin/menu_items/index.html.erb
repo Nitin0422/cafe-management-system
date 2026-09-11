@@ -26,7 +26,7 @@
         <td>
           <%= link_to "Edit", edit_admin_menu_item_path(menu_item) %>
           <% if menu_item.available? %>
-            <%= button_to "Deactivate", deactivate_admin_menu_item_path(menu_item), method: :post,
+            <%= button_to "Deactivate", deactivate_admin_menu_item_path(menu_item), method: :post, class: "btn btn--danger",
                           data: { turbo_confirm: "Deactivate this menu item? It will no longer be orderable." } %>
           <% end %>
         </td>

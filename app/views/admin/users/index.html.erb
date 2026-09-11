@@ -25,7 +25,7 @@
         <td><%= user.created_by&.full_name %></td>
         <td>
           <% if user.active? %>
-            <%= button_to "Deactivate", deactivate_admin_user_path(user), method: :post,
+            <%= button_to "Deactivate", deactivate_admin_user_path(user), method: :post, class: "btn btn--danger",
                           data: { turbo_confirm: "Deactivate this account? The user will no longer be able to log in." } %>
           <% end %>
         </td>

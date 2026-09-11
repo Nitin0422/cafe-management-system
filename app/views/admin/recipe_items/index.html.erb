@@ -21,7 +21,7 @@
         <td><%= recipe_item.quantity %> <%= recipe_item.ingredient.unit %></td>
         <td>
           <%= link_to "Edit", edit_admin_recipe_item_path(recipe_item) %>
-          <%= button_to "Remove", admin_recipe_item_path(recipe_item), method: :delete,
+          <%= button_to "Remove", admin_recipe_item_path(recipe_item), method: :delete, class: "btn btn--danger",
                         data: { turbo_confirm: "Remove this ingredient from the recipe?" } %>
         </td>
       </tr>
