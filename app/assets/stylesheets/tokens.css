@@ -1,0 +1,72 @@
+/*
+ * Design tokens — the single source of truth for the visual system
+ * (DESIGN.md §5-8). Warm café palette: cream background, espresso-brown
+ * primary action, muted green/amber/red for success/warning/error, warm
+ * grays for borders and supporting text. System font stack only.
+ *
+ * Propshaft serves each stylesheet independently with no guaranteed load
+ * order, so this file defines ONLY :root custom properties. Every other
+ * stylesheet expresses theming via var(--token) references, making
+ * cascade order irrelevant across files.
+ */
+
+:root {
+  /* Color roles (DESIGN.md §6) */
+  --color-bg: #faf6f0;
+  --color-surface: #ffffff;
+  --color-text-primary: #3a2b22;
+  --color-text-secondary: #6f5b4e;
+  --color-text-muted: #8f7a6a;
+  --color-border: #e5dccf;
+
+  --color-primary: #6f4e37;
+  --color-primary-hover: #5b3d29;
+  --color-on-primary: #ffffff;
+
+  --color-success: #3f6b46;
+  --color-success-hover: #33603b;
+  --color-warning: #b07d2b;
+  --color-warning-hover: #93661f;
+  --color-error: #b0413e;
+  --color-error-hover: #93322e;
+  --color-on-error: #ffffff;
+
+  /* Tinted backgrounds for flash messages and validation feedback */
+  --color-success-bg: #edf3ec;
+  --color-warning-bg: #faf2e6;
+  --color-error-bg: #fbedec;
+
+  /* Radius system (DESIGN.md §8) — keep elements subtle, never uniformly pill */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+
+  /* Shadows (DESIGN.md §7) — elevation only, used sparingly */
+  --shadow-xs: 0 1px 2px rgba(58, 43, 34, 0.06);
+  --shadow-md: 0 4px 12px rgba(58, 43, 34, 0.1);
+  --shadow-lg: 0 8px 24px rgba(58, 43, 34, 0.14);
+
+  /* Focus ring (shared by base and form focus states) */
+  --focus-ring: 0 0 0 3px rgba(111, 78, 55, 0.3);
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Typography (DESIGN.md §5) — restrained scale, system stack only */
+  --font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.375rem;
+  --font-size-2xl: 1.75rem;
+  --line-height-base: 1.5;
+  --line-height-heading: 1.25;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+}

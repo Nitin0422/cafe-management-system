@@ -1,0 +1,97 @@
+/*
+ * Button component (DESIGN.md §10). Button hierarchy: primary (default),
+ * secondary, tertiary, danger (destructive).
+ *
+ * Plain submits, `button` elements, and `form.button_to` submit buttons all
+ * get the default primary treatment, so screens keep one visually dominant
+ * action without markup changes. Variants are applied with .btn--* classes.
+ * Variant selectors here carry the same specificity as the element-level
+ * base rules and are declared later in this same file, so overrides apply
+ * regardless of cross-file load order.
+ */
+
+.btn,
+button,
+input[type="submit"],
+input[type="button"] {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-base);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  color: var(--color-on-primary);
+}
+
+/* Secondary — quiet bordered action */
+.btn--secondary,
+button.btn--secondary,
+input[type="submit"].btn--secondary {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.btn--secondary:hover,
+button.btn--secondary:hover,
+input[type="submit"].btn--secondary:hover {
+  background-color: var(--color-bg);
+  color: var(--color-primary-hover);
+  border-color: var(--color-border);
+}
+
+/* Tertiary — text-only action */
+.btn--tertiary,
+button.btn--tertiary,
+input[type="submit"].btn--tertiary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: transparent;
+}
+
+.btn--tertiary:hover,
+button.btn--tertiary:hover,
+input[type="submit"].btn--tertiary:hover {
+  background-color: transparent;
+  color: var(--color-primary-hover);
+  border-color: transparent;
+  text-decoration: underline;
+}
+
+/* Danger — destructive action */
+.btn--danger,
+button.btn--danger,
+input[type="submit"].btn--danger {
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  border-color: var(--color-error);
+}
+
+.btn--danger:hover,
+button.btn--danger:hover,
+input[type="submit"].btn--danger:hover {
+  background-color: var(--color-error-hover);
+  color: var(--color-on-error);
+  border-color: var(--color-error-hover);
+}
+
+/* button_to emits a wrapping form; keep it inline so the submit button
+   sits alongside adjacent links instead of breaking into a new line. */
+form.button_to {
+  display: inline;
+  margin: 0;
+}

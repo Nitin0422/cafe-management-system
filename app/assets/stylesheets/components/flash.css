@@ -1,0 +1,28 @@
+/*
+ * Flash messages — rendered by the application layout as
+ * <p class="notice"> (success tone) and <p class="alert"> (error tone).
+ * Width matches the .site-main content container.
+ */
+
+.notice,
+.alert {
+  max-width: 64rem;
+  margin: var(--space-4) auto 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.notice {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.alert {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
