@@ -1,0 +1,38 @@
+<%# Shared site header: brand + role-based navigation. Link labels are
+    contract-relevant (system specs assert them verbatim) and mirror the
+    link sets that previously lived on the home page. %>
+<header class="site-header">
+  <div class="site-header__inner">
+    <%= link_to "Aafnai Coffee", root_path, class: "site-header__brand" %>
+
+    <nav class="site-nav" aria-label="Primary">
+      <% if logged_in? %>
+        <% if current_user.admin? %>
+          <%= link_to "Manage staff accounts", admin_users_path,
+                      aria: (current_page?(admin_users_path) ? { current: "page" } : nil) %>
+          <%= link_to "Manage menu", admin_menu_items_path,
+                      aria: (current_page?(admin_menu_items_path) ? { current: "page" } : nil) %>
+          <%= link_to "Manage ingredients", admin_ingredients_path,
+                      aria: (current_page?(admin_ingredients_path) ? { current: "page" } : nil) %>
+          <%= link_to "Manage recipes", admin_recipe_items_path,
+                      aria: (current_page?(admin_recipe_items_path) ? { current: "page" } : nil) %>
+          <%= link_to "Stock entries", admin_stock_entries_path,
+                      aria: (current_page?(admin_stock_entries_path) ? { current: "page" } : nil) %>
+        <% elsif current_user.staff? %>
+          <%= link_to "Stock entries", admin_stock_entries_path,
+                      aria: (current_page?(admin_stock_entries_path) ? { current: "page" } : nil) %>
+          <%= link_to "Register customer", new_staff_customer_path,
+                      aria: (current_page?(new_staff_customer_path) ? { current: "page" } : nil) %>
+        <% end %>
+        <%= button_to "Log out", logout_path, method: :delete, class: "btn btn--secondary" %>
+      <% else %>
+        <%= link_to "Customer log in", customer_login_path,
+                    aria: (current_page?(customer_login_path) ? { current: "page" } : nil) %>
+        <%= link_to "Register", register_path,
+                    aria: (current_page?(register_path) ? { current: "page" } : nil) %>
+        <%= link_to "Log in", login_path,
+                    aria: (current_page?(login_path) ? { current: "page" } : nil) %>
+      <% end %>
+    </nav>
+  </div>
+</header>

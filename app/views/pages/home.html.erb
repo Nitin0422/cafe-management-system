@@ -2,19 +2,4 @@
 
 <% if logged_in? %>
   <p>Welcome, <%= current_user.full_name %>.</p>
-  <%= button_to "Log out", logout_path, method: :delete %>
-  <% if current_user.admin? %>
-    <p><%= link_to "Manage staff accounts", admin_users_path %></p>
-    <p><%= link_to "Manage menu", admin_menu_items_path %></p>
-    <p><%= link_to "Manage ingredients", admin_ingredients_path %></p>
-    <p><%= link_to "Manage recipes", admin_recipe_items_path %></p>
-    <p><%= link_to "Stock entries", admin_stock_entries_path %></p>
-  <% elsif current_user.staff? %>
-    <p><%= link_to "Stock entries", admin_stock_entries_path %></p>
-    <p><%= link_to "Register customer", new_staff_customer_path %></p>
-  <% end %>
-<% else %>
-  <p><%= link_to "Customer log in", customer_login_path %></p>
-  <p><%= link_to "Register", register_path %></p>
-  <p><%= link_to "Log in", login_path %></p>
 <% end %>
