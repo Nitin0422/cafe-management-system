@@ -16,6 +16,8 @@ RSpec.describe "Site header navigation", type: :system do
     expect(page).not_to have_link("Manage menu")
     expect(page).not_to have_link("Manage ingredients")
     expect(page).not_to have_link("Manage recipes")
+    expect(page).not_to have_link("Stock entries")
+    expect(page).not_to have_link("Register customer")
   end
 
   it "shows logged-in customers only the logout action" do
@@ -31,6 +33,8 @@ RSpec.describe "Site header navigation", type: :system do
     expect(page).not_to have_link("Manage menu")
     expect(page).not_to have_link("Manage ingredients")
     expect(page).not_to have_link("Manage recipes")
+    expect(page).not_to have_link("Stock entries")
+    expect(page).not_to have_link("Register customer")
   end
 
   it "shows staff the stock and customer registration links and never admin links" do
