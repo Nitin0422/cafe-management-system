@@ -11,7 +11,10 @@
     <p><%= link_to "Stock entries", admin_stock_entries_path %></p>
   <% elsif current_user.staff? %>
     <p><%= link_to "Stock entries", admin_stock_entries_path %></p>
+    <p><%= link_to "Register customer", new_staff_customer_path %></p>
   <% end %>
 <% else %>
-  <%= link_to "Log in", login_path %>
+  <p><%= link_to "Customer log in", customer_login_path %></p>
+  <p><%= link_to "Register", register_path %></p>
+  <p><%= link_to "Log in", login_path %></p>
 <% end %>

@@ -4,6 +4,22 @@ Rails.application.routes.draw do
   post "login",  to: "sessions#create"
   delete "logout", to: "sessions#destroy", as: :logout
 
+  # Customer self-service registration (T7, FR-1). Customers register with
+  # email AND phone plus a password.
+  get  "register", to: "registrations#new",     as: :register
+  post "register", to: "registrations#create"
+
+  # Customer login (T7, FR-7). A distinct entry point from the employee
+  # email+password login: customers sign in with email OR phone + password.
+  get  "customer/login", to: "customer_sessions#new",     as: :customer_login
+  post "customer/login", to: "customer_sessions#create"
+
+  # Counter-side customer registration (T7, PRD assumption). Any employee may
+  # create a customer account when none exists.
+  namespace :staff do
+    resources :customers, only: %i[new create]
+  end
+
   # Admin staff-account management (T4). Only admins may manage staff accounts.
   # Admin menu management (T5). Only admins may manage menu items; deactivate
   # soft-hides an item by flipping `available` to false rather than deleting it.

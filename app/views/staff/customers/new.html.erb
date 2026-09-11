@@ -1,0 +1,37 @@
+<% content_for :title, "Register customer" %>
+
+<h1>Register customer</h1>
+
+<%= form_with model: @user, url: staff_customers_path do |form| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :full_name, "Full name" %>
+    <%= form.text_field :full_name, autofocus: true %>
+  </div>
+
+  <div>
+    <%= form.label :email, "Email" %>
+    <%= form.email_field :email, autocomplete: "email" %>
+  </div>
+
+  <div>
+    <%= form.label :phone, "Phone" %>
+    <%= form.text_field :phone, autocomplete: "tel" %>
+  </div>
+
+  <div>
+    <%= form.label :password, "Password" %>
+    <%= form.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <%= form.submit "Create customer account" %>
+<% end %>

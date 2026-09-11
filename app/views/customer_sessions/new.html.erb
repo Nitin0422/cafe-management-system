@@ -1,0 +1,17 @@
+<% content_for :title, "Customer log in" %>
+
+<h1>Customer log in</h1>
+
+<%= form_with url: customer_login_path do |form| %>
+  <div>
+    <%= form.label :identifier, "Email or phone" %>
+    <%= form.text_field :identifier, autofocus: true, autocomplete: "username" %>
+  </div>
+
+  <div>
+    <%= form.label :password, "Password" %>
+    <%= form.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <%= form.submit "Log in" %>
+<% end %>
