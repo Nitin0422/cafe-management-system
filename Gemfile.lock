@@ -84,7 +84,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.26.0)
       msgpack (~> 1.5)
-    brakeman (8.0.6)
+    brakeman (8.1.0)
       racc
     builder (3.3.0)
     bundler-audit (0.9.3)
@@ -116,6 +116,7 @@ GEM
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
     ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
     globalid (1.4.0)
       activesupport (>= 6.1)
     i18n (1.15.2)
@@ -166,12 +167,15 @@ GEM
     nio4r (2.7.5)
     nokogiri (1.19.4-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.19.4-x86_64-linux-gnu)
+      racc (~> 1.4)
     parallel (2.2.0)
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
     pg (1.6.3)
     pg (1.6.3-arm64-darwin)
+    pg (1.6.3-x86_64-linux)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.0)
@@ -324,6 +328,7 @@ GEM
 
 PLATFORMS
   arm64-darwin
+  x86_64-linux
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
@@ -369,7 +374,7 @@ CHECKSUMS
   bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   bootsnap (1.26.0) sha256=ca96237015e6cd74a02963d5821cf00ac5ea134653b323e8cd6d702a7718bf1b
-  brakeman (8.0.6) sha256=759cc69341115e6c2dcd47b6fd8649a0b9bd540e3585ac8a0a94e31c66fee386
+  brakeman (8.1.0) sha256=cfa9e5214e4925842f4bc849a64f8a7e6c5d0425fe98eac8d7b7bc60fdc17e07
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
   bundler-audit (0.9.3) sha256=81c8766c71e47d0d28a0f98c7eed028539f21a6ea3cd8f685eb6f42333c9b4e9
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
@@ -385,6 +390,7 @@ CHECKSUMS
   factory_bot (6.6.0) sha256=1fc1b3b5620ec980a6a27aec1b6ec8c250ca82962e970e8a40f93e8d388d4b89
   factory_bot_rails (6.5.1) sha256=d3cc4851eae4dea8a665ec4a4516895045e710554d2b5ac9e68b94d351bc6d68
   ffi (1.17.4-arm64-darwin) sha256=19071aaf1419251b0a46852abf960e77330a3b334d13a4ab51d58b31a937001b
+  ffi (1.17.4-x86_64-linux-gnu) sha256=9d3db14c2eae074b382fa9c083fe95aec6e0a1451da249eab096c34002bc752d
   globalid (1.4.0) sha256=037f12fbf1d9d7a014d501c2d5c77356fd4ddd96d7a7991d6700bba96706f427
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
   image_processing (2.1.0) sha256=ca3814b1b909fc5fab68b261c50eaffef11e29a6907143e9cf1efc14b6dc6f47
@@ -409,10 +415,12 @@ CHECKSUMS
   net-smtp (0.5.1) sha256=ed96a0af63c524fceb4b29b0d352195c30d82dd916a42f03c62a3a70e5b70736
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   nokogiri (1.19.4-arm64-darwin) sha256=a46db9853286e6597b36ebc6953817d15acf3a299583eb3f89fdc6f91dd63527
+  nokogiri (1.19.4-x86_64-linux-gnu) sha256=379fae440b28915e3f19d752ce2dcf8465ed2b2fbefd2a7ca0dd497bc981a06a
   parallel (2.2.0) sha256=e1059c5fd7b649558a0aec38a769f06a42942bdb40503d005a59c352fe011cd8
   parser (3.3.12.0) sha256=21a6d7f755d5a24dfbdc6e6b772e4e879a52e7631a88bc5a3a134606052c9828
   pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99
   pg (1.6.3-arm64-darwin) sha256=7240330b572e6355d7c75a7de535edb5dfcbd6295d9c7777df4d9dddfb8c0e5f
+  pg (1.6.3-x86_64-linux) sha256=5d9e188c8f7a0295d162b7b88a768d8452a899977d44f3274d1946d67920ae8d
   pp (0.6.4) sha256=dfcb0fce700c41456265922884f9fe195d7fbb0674a3578e6c0f69588e82b570
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
   prism (1.9.0) sha256=7b530c6a9f92c24300014919c9dcbc055bf4cdf51ec30aed099b06cd6674ef85
